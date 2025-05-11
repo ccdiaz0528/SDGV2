@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SDGV</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{url('assets/css/bootstrap.min.css')}}">
+
+    {{-- Bootstrap --}}
+    <link rel="stylesheet" href="{{ url('assets/css/bootstrap.min.css') }}">
+    {{-- Tus estilos con variables, modo oscuro y animaciones --}}
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 </head>
-<body>
-        @include('layouts.partials.navbar')
-    <main class="form-container">
+
+<body class="fade-in-up light-mode">  {{-- Cambia a dark-mode si quieres forzar --}}
+
+    {{-- Navbar animado --}}
+    @include('layouts.partials.navbar')
+
+    {{-- Contenedor principal con animación --}}
+    <main class="form-container zoom-in" style="animation-delay:0.3s;">
         @yield('content')
     </main>
-    <script src="{{url('assets/js/bootstrap.bundle.min.js')}}"></script>
-    <footer class="footer">
-        <div class="footer-content">
-            <p>© 2024 Sistema de Documentación de Vehículos. Todos los derechos reservados.</p>
-            <p>Desarrollado con pasión por Cristian Diaz - Carlos Camacho.</p>
+
+    {{-- Footer con entrada suave --}}
+    <footer class="footer slide-up" style="animation-delay:0.5s;">
+        <div class="footer-content text-center py-3">
+            <p>© 2025 Sistema de Documentación de Vehículos. Todos los derechos reservados.</p>
+            <p>Desarrollado con pasión por Cristian Díaz – Carlos Camacho.</p>
         </div>
     </footer>
+
+    {{-- Bootstrap JS --}}
+    <script src="{{ url('assets/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
-

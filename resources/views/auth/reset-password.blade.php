@@ -1,8 +1,8 @@
 @extends('layouts.app-master')
-@section('content')
 
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: 8px;">
+@section('content')
+<div class="container d-flex justify-content-center align-items-center fade-in-up" style="min-height: 80vh;">
+    <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: var(--radius); background: #fff; box-shadow: var(--shadow-light);">
 
         @if (session('status'))
             <div class="alert alert-success">
@@ -10,7 +10,8 @@
             </div>
         @endif
 
-        <h1 class="text-center mb-4">Restablecer Contraseña</h1>
+        <h1 class="text-center mb-4" style="color: var(--text-dark);">{{ __('Restablecer Contraseña') }}</h1>
+
         <form method="POST" action="{{ route('password.store') }}">
             @csrf
 
@@ -19,7 +20,7 @@
 
             <!-- Email Address -->
             <div class="mb-3">
-                <label for="email" class="form-label">{{ __('Email') }}</label>
+                <label for="email" class="form-label" style="color: var(--text-dark);">{{ __('Email') }}</label>
                 <input id="email" class="form-control" type="email" name="email"
                        placeholder="Ingrese su email"
                        value="{{ old('email', $request->email) }}" required autofocus autocomplete="username">
@@ -30,7 +31,7 @@
 
             <!-- Password -->
             <div class="mb-3">
-                <label for="password" class="form-label">{{ __('Password') }}</label>
+                <label for="password" class="form-label" style="color: var(--text-dark);">{{ __('Password') }}</label>
                 <div class="input-group">
                     <input id="password" class="form-control" type="password" name="password"
                            placeholder="Ingrese su contraseña" required autocomplete="new-password">
@@ -47,7 +48,7 @@
 
             <!-- Confirm Password -->
             <div class="mb-3">
-                <label for="password_confirmation" class="form-label">{{ __('Confirm Password') }}</label>
+                <label for="password_confirmation" class="form-label" style="color: var(--text-dark);">{{ __('Confirm Password') }}</label>
                 <div class="input-group">
                     <input id="password_confirmation" class="form-control" type="password" name="password_confirmation"
                            placeholder="Confirme su contraseña" required autocomplete="new-password">
@@ -63,7 +64,7 @@
             </div>
 
             <button type="submit" class="btn btn-custom w-100">
-                {{ __('Reset Password') }}
+                {{ __('Restablecer Contraseña') }}
             </button>
         </form>
     </div>

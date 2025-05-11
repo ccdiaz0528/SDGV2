@@ -22,7 +22,7 @@
                 {{ session('status') }}
             </div>
         @endif
-        
+
         <form action="{{ route('password.email') }}" method="POST">
             @csrf
 

@@ -29,34 +29,38 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-   public function store(RegisterRequest $request)
-    {
-        // Validar la información de registro
-        $validatedData = $request->validated();
+  public function store(RegisterRequest $request)
+{
+    // Validar la información de registro
+    $validatedData = $request->validated();
 
-        // Crear el usuario con rol 'user'
-        $user = User::create([  // Asignar el usuario a la variable $user
-            'username' => $validatedData['username'],
-            'email' => $validatedData['email'],
-            'password' => $validatedData['password'], // No encriptes aquí, el modelo se encargará de eso
-            'role' => 'user',
-        ]);
+    // Crear el usuario con rol 'user'
+    $user = User::create([
+        'username' => $validatedData['username'],
+        'email' => $validatedData['email'],
+        'password' => Hash::make($validatedData['password']), // Asegúrate de usar Hash::make() aquí
+        'role' => 'user',
+    ]);
 
-        // Crear el cliente vinculado al usuario
-        Cliente::create([
-            'user_id' => $user->id,  // Ahora puedes acceder a $user
-            'nombre' => $request->nombre,
-            'apellido' => $request->apellido,
-            'cedula' => $request->cedula,
-            'telefono' => $request->telefono,
-            'direccion' => $request->direccion,
-        ]);
+    // Crear el cliente vinculado al usuario
+    Cliente::create([
+        'user_id' => $user->id,
+        'nombre' => $request->nombre,
+        'apellido' => $request->apellido,
+        'cedula' => $request->cedula,
+        'telefono' => $request->telefono,
+        'direccion' => $request->direccion,
+    ]);
 
-        // Autenticar al usuario automáticamente
-        auth()->login($user);
+    // Enviar el correo electrónico de verificación
+    event(new Registered($user)); // Dispara el evento Registered
 
-        return redirect()->route('home.index')->with('success', '¡Registro exitoso!');
-    }
+    // Autenticar al usuario
+    auth()->login($user);
+
+    // Redirigir al usuario a la página de verificación
+    return redirect()->route('verification.notice')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico.');
+}
 
     public function showRegistrationForm()
     {

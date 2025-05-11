@@ -1,13 +1,11 @@
 @extends('layouts.app-master')
 
 @section('content')
-
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-
     <div class="card shadow p-4" style="width: 100%; max-width: 400px; border-radius: 8px;">
 
+        <h2 class="text-center mb-4">Inicia Sesión</h2>
 
-        <h1 class="text-center mb-4">Inicia Sesión</h1>
         @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
@@ -17,56 +15,89 @@
         <form action="/login" method="POST">
             @csrf
 
+            <!-- Usuario -->
             <div class="form-floating mb-3">
-                <input type="text" name="username" class="form-control" placeholder="Usuario o Correo" id="exampleInputEmail1" aria-describedby="emailHelp" value="{{ old('username') }}">
-                <label for="exampleInputEmail1" class="form-label">Usuario o Correo</label>
+                <input type="text" name="username" class="form-control" placeholder="Usuario o Correo" id="inputUsername" value="{{ old('username') }}" required>
+                <label for="inputUsername">Usuario o Correo</label>
                 @error('username')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
-            <!-- Campo de contraseña con toggle para visualizar -->
-            <div class="mb-3 position-relative">
-                <div class="form-floating">
-                    <input type="password" name="password" class="form-control" placeholder="Contraseña" id="exampleInputPassword1">
-                    <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                </div>
-                <button type="button" id="togglePassword" class="btn btn-outline-secondary position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+            <!-- Contraseña -->
+            <div class="form-floating mb-3 position-relative">
+                <input type="password" name="password" class="form-control" placeholder="Contraseña" id="inputPassword" required>
+                <label for="inputPassword">Contraseña</label>
+
+                <!-- Botón de ver contraseña -->
+                <button type="button" id="togglePassword" class="btn btn-sm btn-outline-secondary position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); z-index: 10;">
                     <i class="fa fa-eye"></i>
                 </button>
+
                 @error('password')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
-            <div class="mb-3">
+            <!-- Enlaces -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <a href="/register">Crear tu cuenta</a>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                        Olvidaste tu contraseña?
+                    <a class="text-sm text-decoration-none" href="{{ route('password.request') }}">
+                        ¿Olvidaste tu contraseña?
                     </a>
                 @endif
             </div>
-            <br>
-            <button type="submit" class="btn btn-custom me-2 w-100">Iniciar Sesión</button>
+
+            <!-- Botón principal -->
+            <button type="submit" class="btn btn-custom w-100 transition-hover">Iniciar Sesión</button>
         </form>
     </div>
 </div>
 
+<!-- Estilos -->
+<style>
+    .transition-hover {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .transition-hover:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Modo oscuro opcional */
+    body.dark-mode .card {
+        background-color: #1f1f1f;
+        color: #f1f1f1;
+    }
+
+    body.dark-mode .form-control {
+        background-color: #2a2a2a;
+        color: #fff;
+        border-color: #444;
+    }
+
+    body.dark-mode .form-floating label {
+        color: #ccc;
+    }
+</style>
+
+<!-- Script -->
 <script>
     document.getElementById('togglePassword').addEventListener('click', function () {
-        const passwordInput = document.getElementById('exampleInputPassword1');
+        const passwordInput = document.getElementById('inputPassword');
+        const icon = this.querySelector('i');
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            this.innerHTML = '<i class="fa fa-eye-slash"></i>';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
         } else {
             passwordInput.type = 'password';
-            this.innerHTML = '<i class="fa fa-eye"></i>';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
         }
     });
 </script>
-
 @endsection
