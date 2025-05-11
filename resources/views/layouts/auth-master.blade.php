@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SDGV</title>
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{url('assets/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 </head>
