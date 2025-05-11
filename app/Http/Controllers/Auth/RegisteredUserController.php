@@ -13,6 +13,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Cliente;
 use App\Http\Requests\RegisterRequest; // Ensure this file exists in the specified namespace
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NuevaCuentaMail; // Ensure this class exists in the App\Mail namespace
 
 class RegisteredUserController extends Controller
 {
@@ -29,7 +31,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-  public function store(RegisterRequest $request)
+ public function store(RegisterRequest $request)
 {
     // Validar la información de registro
     $validatedData = $request->validated();
@@ -38,12 +40,12 @@ class RegisteredUserController extends Controller
     $user = User::create([
         'username' => $validatedData['username'],
         'email' => $validatedData['email'],
-        'password' => Hash::make($validatedData['password']), // Asegúrate de usar Hash::make() aquí
+        'password' => Hash::make($validatedData['password']),
         'role' => 'user',
     ]);
 
-    // Crear el cliente vinculado al usuario
-    Cliente::create([
+    // Crear el cliente vinculado al usuario y asignarlo a una variable
+    $cliente = Cliente::create([
         'user_id' => $user->id,
         'nombre' => $request->nombre,
         'apellido' => $request->apellido,
@@ -52,11 +54,14 @@ class RegisteredUserController extends Controller
         'direccion' => $request->direccion,
     ]);
 
-    // Enviar el correo electrónico de verificación
-    event(new Registered($user)); // Dispara el evento Registered
+    // Disparar el evento Registered
+    event(new Registered($user));
 
     // Autenticar al usuario
     auth()->login($user);
+
+    // Enviar el correo pasando el objeto Cliente para que se muestre $cliente->nombre en la vista
+    Mail::to($user->email)->send(new NuevaCuentaMail($cliente));
 
     // Redirigir al usuario a la página de verificación
     return redirect()->route('verification.notice')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico.');
