@@ -20,7 +20,8 @@
 
     {{-- Gallery Cards for Verified Users --}}
     @auth
-        @if(auth()->user()->hasVerifiedEmail())
+    @if(auth()->user()->hasVerifiedEmail())
+        @if(auth()->user()->role !== 'admin')
         <div class="row justify-content-center mb-5">
             <div class="col-sm-6 col-md-4 mb-3 fade-in-up" style="animation-delay: 0.4s;">
                 <div class="card shadow-sm zoom-in" style="animation-delay: 0.6s;">
@@ -43,13 +44,14 @@
                 </div>
             </div>
         </div>
-        @else
+        @endif
+    @else
         <div class="alert alert-warning text-center mb-5 slide-left" style="animation-delay: 0.4s;">
             <p class="mb-2 fade-in" style="animation-delay: 0.6s;">Tu correo electrónico no está verificado.</p>
             <a href="{{ route('verification.notice') }}" class="btn btn-warning zoom-in" style="animation-delay: 0.8s;">Verificar Correo</a>
         </div>
-        @endif
-    @endauth
+    @endif
+@endauth
 
     {{-- Info Sections --}}
     <div class="row fade-in-up" style="animation-delay: 0.3s;">
