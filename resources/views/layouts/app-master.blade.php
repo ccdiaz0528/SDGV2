@@ -14,7 +14,7 @@
     <!-- Tus estilos con variables y animaciones -->
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 </head>
-<body class="fade-in-up">  {{-- Clase global de entrada --}}
+<bod y class="fade-in-up">  {{-- Clase global de entrada --}}
 
     @include('layouts.partials.navbar')  {{-- El navbar ya usa slide-in y zoom-in --}}
 
@@ -38,5 +38,5 @@
       // Inicializar AOS si lo usas
       AOS.init({ duration: 800, once: true });
     </script>
-</body>
+</bod>
 </html>
