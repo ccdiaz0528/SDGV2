@@ -20,4 +20,9 @@ class Licencia extends Model
     {
         return $this->belongsToMany(CategoriaLicencia::class, 'licencia_categoria', 'licencia_id', 'categoria_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 }

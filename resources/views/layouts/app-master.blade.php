@@ -1,3 +1,4 @@
+<!-- filepath: c:\laragon\www\SDGV2\resources\views\layouts\app-master.blade.php -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +15,7 @@
     <!-- Tus estilos con variables y animaciones -->
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
 </head>
-<bod y class="fade-in-up">  {{-- Clase global de entrada --}}
+<body class="fade-in-up">  {{-- Clase global de entrada --}}
 
     @include('layouts.partials.navbar')  {{-- El navbar ya usa slide-in y zoom-in --}}
 
@@ -38,5 +39,5 @@
       // Inicializar AOS si lo usas
       AOS.init({ duration: 800, once: true });
     </script>
-</bod>
+</body>
 </html>

@@ -100,27 +100,35 @@ class VehiculoController extends Controller
 
 
 
+
+// filepath: c:\laragon\www\SDGV2\app\Http\Controllers\VehiculoController.php
+
+
+
 public function generarDuplicado($id)
 {
-    // Obtener el vehículo y su documentación
-    $vehiculo = Vehiculo::with('documentacion.tipoDocumento')->findOrFail($id);
+    // Obtener el vehículo y sus relaciones (documentación y usuario)
+    $vehiculo = Vehiculo::with('documentacion.tipoDocumento', 'user')->findOrFail($id);
 
-    // Generar el PDF
-    $pdf = PDF::loadView('pdf.vehiculo', compact('vehiculo'));
+    // Generar el contenido HTML usando la vista 'pdf.vehiculo'
+    // Este contenido se enviará en el cuerpo del correo
+    $contenido = view('pdf.vehiculo', compact('vehiculo'))->render();
 
-    // Nombre del archivo con base en la placa del vehículo
+    // Generar el PDF a partir de la misma vista
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.vehiculo', compact('vehiculo'));
+
+    // Nombre y ruta del archivo PDF
     $nombreArchivo = "Duplicado_Vehiculo_{$vehiculo->placa}.pdf";
+    $rutaArchivo = storage_path("app/public/{$nombreArchivo}");
 
-    // Ruta donde se guardará el archivo
-    $rutaArchivo = storage_path("app/public/$nombreArchivo");
-
-    // Guardar el PDF en la ruta especificada
+    // Guardar el PDF de forma temporal
     $pdf->save($rutaArchivo);
 
-    // Devolver el PDF como descarga
+    // Enviar el correo con el contenido HTML (sin adjuntar el PDF)
+    \Illuminate\Support\Facades\Mail::to($vehiculo->user->email)
+        ->send(new \App\Mail\DuplicadoVehiculoMail($vehiculo, $contenido));
+
+    // Retornar la descarga del PDF al usuario y eliminar el archivo después
     return response()->download($rutaArchivo)->deleteFileAfterSend(true);
 }
-
-
-
 }
