@@ -13,11 +13,13 @@ class Documentacion extends Model
     protected $fillable = [
         'vehiculo_id',
         'tipo_documento_id',
-        'fecha_expedicion',
-        'fecha_vencimiento',
+        
         'entidad_emisora',
     ];
-
+protected $casts = [
+    'fecha_expedicion' => 'datetime',
+    'fecha_vencimiento' => 'datetime',
+];
 
     public function tipoDocumento()
     {
