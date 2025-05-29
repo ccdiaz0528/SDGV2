@@ -10,7 +10,7 @@
     <table align="center" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
         <tr>
             <td align="center" style="padding: 20px; background-color: #ffffff;">
-                <img src="{{ asset('assets/auto.png') }}" alt="SDGV Logo" width="60" style="display:block;">
+                {{ config('app.name') }}
             </td>
         </tr>
         <tr>

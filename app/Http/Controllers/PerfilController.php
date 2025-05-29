@@ -5,6 +5,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
+
 class PerfilController extends Controller
 {
     public function index()
@@ -56,5 +59,38 @@ class PerfilController extends Controller
 
         return view('perfil.edit', compact('user'));
     }
+public function actualizarCredenciales(Request $request)
+{
+    $user = auth()->user();
 
+    // 1. Validate current password
+    $request->validate([
+        'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+            if (!Hash::check($value, $user->password)) {
+                $fail('La contraseña actual es incorrecta.');
+            }
+        }],
+    ]);
+
+    // 2. Validate new credentials
+    $rules = [
+        'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+        'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        'password' => ['nullable', 'string', 'min:8', 'confirmed'], // 'nullable' allows it to be empty, 'confirmed' ensures password_confirmation matches
+    ];
+
+    $validatedData = $request->validate($rules);
+
+    // 3. Update user data
+    $user->username = $validatedData['username'];
+    $user->email = $validatedData['email'];
+
+    if ($request->filled('password')) { // Only update password if a new one is provided
+        $user->password = Hash::make($validatedData['password']);
+    }
+
+    $user->save();
+
+    return redirect()->back()->with('success_login', 'Credenciales de acceso actualizadas correctamente.');
+}
 }

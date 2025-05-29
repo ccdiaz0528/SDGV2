@@ -22,6 +22,9 @@ Route::get('/home', [HomeController::class, 'index'])->name('home.index');
 Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.guardar');
+    // In routes/web.php
+Route::post('/perfil', [PerfilController::class, 'guardar'])->name('perfil.guardar');
+Route::put('/perfil/credenciales', [PerfilController::class, 'actualizarCredenciales'])->name('perfil.actualizar_credenciales');
 });
 
 // ✅ Rutas que requieren autenticación Y verificación de correo
