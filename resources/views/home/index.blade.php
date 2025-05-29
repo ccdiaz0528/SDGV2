@@ -29,7 +29,7 @@
                     <div class="card-body text-center p-3">
                         <h6 class="card-title slide-left" style="animation-delay: 0.8s;">Mis Vehículos</h6>
                         <p class="card-text text-muted small fade-in" style="animation-delay: 1s;">Visualiza y administra tus vehículos.</p>
-                        <button class="gallery-button w-100 zoom-in" style="animation-delay: 1.2s;">Ver Vehículos</button>
+                        <a href="{{ route('vehiculos.index') }}" class="gallery-button w-100 zoom-in" style="animation-delay: 1.2s; text-decoration: none; ">Ver Vehículos</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div class="card-body text-center p-3">
                         <h6 class="card-title slide-left" style="animation-delay: 0.9s;">Mis Licencias</h6>
                         <p class="card-text text-muted small fade-in" style="animation-delay: 1.1s;">Revisa y genera duplicados.</p>
-                        <button class="gallery-button w-100 zoom-in" style="animation-delay: 1.3s;">Ver Licencias</button>
+                        <a href="{{ route('licencias.index') }}" class="gallery-button w-100 zoom-in" style="animation-delay: 1.3s; text-decoration: none; ">Ver Licencias</a>
                     </div>
                 </div>
             </div>
