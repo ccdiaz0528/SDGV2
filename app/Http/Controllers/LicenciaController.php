@@ -7,6 +7,7 @@ use App\Models\CategoriaLicencia;
 use App\Models\Licencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class LicenciaController extends Controller
 {
@@ -137,26 +138,33 @@ class LicenciaController extends Controller
     }
 
     public function generarDuplicado($id)
-    {
-        $licencia = Licencia::where('user_id', auth()->id())->with('categorias')->findOrFail($id);
+{
+    // Obtener la licencia con sus categorías
+    $licencia = Licencia::where('user_id', auth()->id())
+                        ->with('categorias')
+                        ->findOrFail($id);
 
-        $diasRestantes = now()->diffInDays($licencia->fecha_vencimiento, false);
+    // Calcular días restantes
+    $diasRestantes = now()->diffInDays($licencia->fecha_vencimiento, false);
 
-        $contenido = "Duplicado de Licencia de Tránsito\n\n";
-        $contenido .= "Número de Licencia: {$licencia->numero_licencia}\n";
-        $contenido .= "Fecha de Expedición: {$licencia->fecha_expedicion}\n";
-        $contenido .= "Fecha de Vencimiento: {$licencia->fecha_vencimiento}\n";
-        $contenido .= "Días Restantes: " . ($diasRestantes >= 0 ? $diasRestantes : "Vencido") . "\n";
-        $contenido .= "Estado: {$licencia->estado}\n";
-        $contenido .= "Categorías:\n";
+    // Renderizar HTML desde la vista Blade
+    $contenidoHtml = view('pdf.licencia', compact('licencia', 'diasRestantes'))->render();
 
-        foreach ($licencia->categorias as $categoria) {
-            $contenido .= "- {$categoria->nombre}: {$categoria->descripcion}\n";
-        }
+    // Generar el PDF usando DomPDF
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.licencia', compact('licencia', 'diasRestantes'));
 
-        $nombreArchivo = 'duplicado_licencia_' . $licencia->numero_licencia . '.txt';
-        Storage::disk('public')->put($nombreArchivo, $contenido);
+    // Nombre del archivo PDF
+    $nombreArchivo = "duplicado_licencia_{$licencia->numero_licencia}.pdf";
+    $rutaArchivo = storage_path("app/public/{$nombreArchivo}");
 
-        return response()->download(storage_path("app/public/{$nombreArchivo}"))->deleteFileAfterSend(true);
-    }
+    // Guardar el PDF temporalmente
+    $pdf->save($rutaArchivo);
+
+    // Enviar correo con el contenido HTML del duplicado
+    \Mail::to($licencia->user->email ?? auth()->user()->email)
+         ->send(new \App\Mail\DuplicadoLicenciaMail($licencia, $contenidoHtml));
+
+    // Devolver el archivo PDF como descarga
+    return response()->download($rutaArchivo)->deleteFileAfterSend(true);
+}
 }
