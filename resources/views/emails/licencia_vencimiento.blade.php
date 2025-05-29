@@ -2,79 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Licencia Próxima a Vencer</title>
+    <title>Aviso: Licencia por vencer</title>
     <style>
         body {
+            background-color: #f5f9fa;
+            color: #333333;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #e6f2f1;
-            color: #2f4f4f;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
         }
         .container {
-            background-color: #ffffff;
             max-width: 600px;
-            margin: 30px auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+            border-radius: 8px;
+            margin: 40px auto;
+            padding: 30px 40px;
+            box-shadow: 0 6px 18px rgba(0, 236, 210, 0.15);
+            border: 2px solid #00ECD2;
         }
         h1 {
-            color: #3eb489; /* verde menta */
-            font-size: 24px;
-            margin-bottom: 10px;
+            color: #00a79d;
+            font-weight: 700;
+            font-size: 26px;
+            margin-bottom: 20px;
         }
         p {
             font-size: 16px;
-            line-height: 1.5;
+            line-height: 1.6;
+            margin-bottom: 18px;
         }
-        .highlight {
-            background-color: #d0f0c0;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 18px;
-            color: #2f4f4f;
-            text-align: center;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #3eb489;
-            color: white !important;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-top: 20px;
+        strong {
+            color: #00a79d;
         }
         .footer {
-            margin-top: 30px;
             font-size: 14px;
-            color: #777777;
+            color: #666666;
+            margin-top: 30px;
             text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚨 ¡Atención, {{ $user->name }}!</h1>
-        <p>Tu licencia con número <strong>{{ $licencia->numero_licencia }}</strong> está próxima a vencer.</p>
-
-        <div class="highlight">
-            Fecha de vencimiento: {{ $licencia->fecha_vencimiento->format('d/m/Y') }}
+        <h1>🚨 ¡Atención!</h1>
+        <p>Tu licencia (Número: <strong>{{ $licencia->numero_licencia }}</strong>) está próxima a vencer.</p>
+        <p><strong>Fecha de vencimiento:</strong> {{ \Carbon\Carbon::parse($licencia->fecha_vencimiento)->format('d/m/Y') }}</p>
+        <p>Por favor, recuerda renovarla antes de la fecha para evitar inconvenientes.</p>
+        <div class="footer">
+            Gracias por tu atención.<br />
+            Saludos,<br />
+            El equipo de {{ config('app.name') }}
         </div>
-
-        <p>Te recomendamos renovar o revisar tu documentación con anticipación para evitar inconvenientes legales o administrativos.</p>
-
-        <a href="{{ url('/') }}" class="btn">Ir al sistema</a>
-
-        <p class="footer">
-            Gracias por utilizar nuestro sistema de gestión de vehículos.<br>
-            Saludos cordiales,<br>
-            <strong>{{ config('app.name') }}</strong>
-        </p>
     </div>
 </body>
 </html>
