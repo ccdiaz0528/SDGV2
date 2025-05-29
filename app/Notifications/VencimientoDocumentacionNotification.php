@@ -23,13 +23,12 @@ class VencimientoDocumentacionNotification extends Notification
     }
 
     public function toMail($notifiable)
-    {
-        $fechaVenc = $this->documentacion->fecha_vencimiento->format('d/m/Y');
-        return (new MailMessage)
-                    ->subject('Aviso: Documentación por vencer')
-                    ->greeting("Estimado/a {$notifiable->name},")
-                    ->line("La documentación (ID: {$this->documentacion->id}) del vehículo vence el **{$fechaVenc}**.")
-                    ->line('Por favor, asegúrese de tener todos los papeles al día antes de esa fecha.')
-                    ->line('Atentamente, el equipo de administración.');
-    }
+{
+    return (new \Illuminate\Notifications\Messages\MailMessage)
+        ->subject('🚨 Aviso: Documentación próxima a vencer')
+        ->view('emails.documentacion_vencimiento', [
+            'user' => $notifiable,
+            'documentacion' => $this->documentacion,
+        ]);
+}
 }

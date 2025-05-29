@@ -13,7 +13,7 @@ class Documentacion extends Model
     protected $fillable = [
         'vehiculo_id',
         'tipo_documento_id',
-        
+
         'entidad_emisora',
     ];
 protected $casts = [
@@ -25,4 +25,9 @@ protected $casts = [
     {
     return $this->belongsTo(TipoDocumento::class);
     }
+
+    public function vehiculo()
+{
+    return $this->belongsTo(Vehiculo::class);
+}
 }

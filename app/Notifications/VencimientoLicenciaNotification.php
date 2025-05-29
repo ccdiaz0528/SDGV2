@@ -23,15 +23,12 @@ class VencimientoLicenciaNotification extends Notification
     }
 
     public function toMail($notifiable)
-    {
-        $fechaVenc = $this->licencia->fecha_vencimiento->format('d/m/Y');
-        return (new MailMessage)
-        ->subject('🔔 Aviso Importante: ¡Tu Licencia Está por Vencer!')
-        ->greeting("Hola, {$notifiable->name}")
-        ->line("Te informamos que tu licencia con número **{$this->licencia->numero_licencia}** vence el día **{$fechaVenc}**.")
-        ->line("Por favor, realiza el proceso de renovación con anticipación para evitar inconvenientes.")
-        ->action('Ir al sistema', url('/')) // Puedes cambiar la URL
-        ->line('Gracias por utilizar nuestro sistema de gestión.')
-        ->salutation('Atentamente, El equipo de soporte');
-    }
+{
+    return (new \Illuminate\Notifications\Messages\MailMessage)
+        ->subject('🚨 Aviso: Licencia próxima a vencer')
+        ->view('emails.licencia_vencimiento', [
+            'user' => $notifiable,
+            'licencia' => $this->licencia,
+        ]);
+}
 }
