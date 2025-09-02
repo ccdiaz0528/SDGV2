@@ -11,8 +11,10 @@ class Licencia extends Model
 
     protected $fillable = [
         'numero_licencia',    // Campo para el número de licencia
-          // Campo para la fecha de vencimiento
-        'estado',             // Campo para el estado (vigente o no)
+        'fecha_expedicion',   // Campo para la fecha de expedición
+        'fecha_vencimiento',  // Campo para la fecha de vencimiento
+        'estado',            // Campo para el estado (vigente o no)
+        'user_id'           // Campo para la relación con el usuario
     ];
 
     protected $casts = [
