@@ -34,6 +34,9 @@ class DocumentacionController extends Controller
      */
     public function store(Request $request)
 {
+    // Depuración: ver todos los datos recibidos
+   // dd($request->all());
+
     $request->validate([
         'tipo_documento_id' => 'required|exists:tipo_documento,id',
         'fecha_expedicion' => 'required|date|before_or_equal:' . now()->toDateString(),

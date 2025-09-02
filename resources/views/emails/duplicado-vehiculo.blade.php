@@ -40,7 +40,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="{{ URL::asset('assets/auto.png') }}" alt="SDGV Logo" width="60">
+            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/auto.png'))) }}" alt="SDGV Logo" width="60">
         </div>
         <div class="content">
             <h1 style="text-align: center;">Duplicado de Documentación</h1>
