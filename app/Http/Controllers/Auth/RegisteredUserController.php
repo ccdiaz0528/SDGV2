@@ -61,7 +61,7 @@ class RegisteredUserController extends Controller
     auth()->login($user);
 
     // Enviar el correo pasando el objeto Cliente para que se muestre $cliente->nombre en la vista
-    Mail::to($user->email)->send(new NuevaCuentaMail($cliente));
+    //Mail::to($user->email)->send(new NuevaCuentaMail($cliente));
 
     // Redirigir al usuario a la página de verificación
     return redirect()->route('verification.notice')->with('success', '¡Registro exitoso! Por favor, verifica tu correo electrónico.');
